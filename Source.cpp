@@ -1,16 +1,32 @@
 #include <iostream>
 #include <cassert>
+#include <vector>
 
 class Branch
 {
 	int count_hous = 0;
+	std::vector<std::string> name_holder;
+
 public:
 
 	int getHouse() { return count_hous; }
+
+	//resizing name_holder vector. accommodation elfs on vector
+	void accommodation_in(int count_elf)
+	{
+		if (count_elf == 0) return;
+		name_holder.resize(count_elf);
+	}
 	void setHouse(int val)
 	{
 		count_hous = val;
 	}
+	void set_Name_Elf(std::string name, int index)
+	{
+		name_holder[index] = name;
+	}
+	std::string* get_Name(int index) { return &name_holder[index]; }
+	int get_Count_Elf() { return name_holder.size(); }
 };
 
 class Middle_B : public Branch
@@ -34,6 +50,15 @@ public:
 		assert(in_count >= 0);
 		assert(in_br != nullptr);
 		this->setHouse(in_count);
+		this->accommodation_in(in_count);
+		if (in_count == this->get_Count_Elf()) std::cout << "Correct elfs";
+		for (int i = 0; i < in_count; i++)
+		{
+			std::cout << "Input name Elf's: " << std::endl;
+			std::string name;
+			std::cin >> name;
+			this->set_Name_Elf(name, i);
+		}
 	}
 
 	int getNumber();
@@ -70,6 +95,7 @@ public:
 	}
 };
 
+//get number house
 int Middle_B::getNumber()
 {
 	for (int i = 0; i < br->getCount(); i++)
@@ -78,6 +104,8 @@ int Middle_B::getNumber()
 		if (branch == this) return i;
 	}
 }
+
+
 
 int main()
 {
