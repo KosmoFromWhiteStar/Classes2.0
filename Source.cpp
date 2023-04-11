@@ -2,6 +2,9 @@
 #include <cassert>
 #include <vector>
 
+
+
+
 class Branch
 {
 	int count_hous = 0;
@@ -9,7 +12,7 @@ class Branch
 
 public:
 
-	int getHouse() { return count_hous; }
+	int get_House() { return count_hous; }
 
 	//resizing name_holder vector. accommodation elfs on vector
 	void accommodation_in(int count_elf)
@@ -17,16 +20,27 @@ public:
 		if (count_elf == 0) return;
 		name_holder.resize(count_elf);
 	}
-	void setHouse(int val)
+
+	// Устанавливаю количество домов на ветку. Которое сооветсвует количеству Эльфов живущих тут.
+	void set_House(int val)
 	{
+		if (val >= 0)
+		{
+			std::cerr << "Err: to low value" << std::endl;
+			return;
+		}
 		count_hous = val;
+		accommodation_in(val);
 	}
+
+	//Индекс - номер дома в котором проживает эльф. Имя None значит что тут никто не проживает.
 	void set_Name_Elf(std::string name, int index)
 	{
 		name_holder[index] = name;
 	}
-	std::string* get_Name(int index) { return &name_holder[index]; }
-	int get_Count_Elf() { return name_holder.size(); }
+
+	// return addres name.
+	std::string* get_Name(int index) { return &name_holder[index]; } 
 };
 
 class Middle_B : public Branch
@@ -35,23 +49,12 @@ class Middle_B : public Branch
 
 public:
 
-	void load_House(int val)
-	{
-		if (val > 0 && val < 50)
-			this->setHouse(val);
-		else
-		{
-			this->setHouse(49);
-		}
-	}
-
 	Middle_B(class Big_b* in_br, int in_count) : br(in_br)
 	{
 		assert(in_count >= 0);
 		assert(in_br != nullptr);
-		this->setHouse(in_count);
-		this->accommodation_in(in_count);
-		if (in_count == this->get_Count_Elf()) std::cout << "Correct elfs";
+		this->set_House(in_count);
+		if (in_count == this->get_House()) std::cout << "Correct elfs";
 		for (int i = 0; i < in_count; i++)
 		{
 			std::cout << "Input name Elf's: " << std::endl;
@@ -61,7 +64,7 @@ public:
 		}
 	}
 
-	int getNumber();
+	int getNumber(std::string* name);
 };
 
 class Big_b : public Branch
@@ -84,44 +87,53 @@ public:
 		return count_middle_B;
 	}
 
-	Big_b(int inCount, int inPassagersMax) : count_middle_B(inCount)
+	//in_Count - count middle branch, count_elfs count elfs on Branch
+	Big_b(int in_Count, int count_elfs) : count_middle_B(in_Count)
 	{
-		assert(inCount >= 0);
-		branch = new Middle_B * [inCount];
+		assert(in_Count >= 0);
+
+		branch = new Middle_B * [in_Count];
 		for (int i = 0; i < count_middle_B;++i)
 		{
-			branch[i] = new Middle_B(this, inPassagersMax);
+			branch[i] = new Middle_B(this, count_elfs);
+		}
+		
+		//Input Elfs in Big branch
+		this->set_House(in_Count);
+		if (in_Count == this->get_House()) std::cout << "Correct elfs";
+		for (int i = 0; i < in_Count; i++)
+		{
+			std::cout << "Input name Elf's: " << std::endl;
+			std::string name;
+			std::cin >> name;
+			this->set_Name_Elf(name, i);
 		}
 	}
 };
 
 //get number house
-int Middle_B::getNumber()
+int Middle_B::getNumber(std::string* name)
 {
+
 	for (int i = 0; i < br->getCount(); i++)
 	{
-		Middle_B* branch = br->getBranchAt(i);
-		if (branch == this) return i;
+		if(*name == *(br->get_Name(i))) return i;
 	}
+	return 0;
 }
 
 
 
 int main()
 {
-	Big_b* tree = new Big_b(2, 20);
+	Big_b* tree = new Big_b(2, 2);
 	for (int i = 0; i < tree->getCount(); ++i)
 	{
 		int count_house = 0;
 		std::cin >> count_house;
-		tree->getBranchAt(i)->setHouse(count_house);
+		tree->getBranchAt(i)->set_House(count_house);
 	}
 
-	Middle_B* car3 = tree->getBranchAt(2);
-	if (car3 == nullptr) {
-		std::cout << "Null";
-		return 0;
-	}
-	std::cout << car3->getNumber() << ": " << car3->getHouse() << std::endl;
+	
 	delete tree;
 }
