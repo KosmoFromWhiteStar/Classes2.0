@@ -3,8 +3,6 @@
 #include <vector>
 
 
-
-
 class Branch
 {
 	int count_hous = 0;
@@ -36,15 +34,15 @@ public:
 	//Индекс - номер дома в котором проживает эльф. Имя None значит что тут никто не проживает.
 	void set_Name_Elf(std::string name, int index)
 	{
+		assert(index > 0);
 		name_holder[index] = name;
 	}
-
-	// return addres name.
-	std::string* get_Name(int index) { return &name_holder[index]; } 
+	
 };
 
 class Middle_B : public Branch
 {
+	//Выделяю место под адрес другого класса для "обратной связи"
 	class Big_b* br = nullptr;
 
 public:
@@ -53,7 +51,9 @@ public:
 	{
 		assert(in_count >= 0);
 		assert(in_br != nullptr);
+
 		this->set_House(in_count);
+
 		if (in_count == this->get_House()) std::cout << "Correct elfs";
 		for (int i = 0; i < in_count; i++)
 		{
@@ -63,8 +63,6 @@ public:
 			this->set_Name_Elf(name, i);
 		}
 	}
-
-	int getNumber(std::string* name);
 };
 
 class Big_b : public Branch
@@ -92,7 +90,8 @@ public:
 	{
 		assert(in_Count >= 0);
 
-		branch = new Middle_B * [in_Count];
+		//Inizialization middle branch on big branch
+		branch = new Middle_B* [in_Count];
 		for (int i = 0; i < count_middle_B;++i)
 		{
 			branch[i] = new Middle_B(this, count_elfs);
@@ -111,29 +110,31 @@ public:
 	}
 };
 
-//get number house
-int Middle_B::getNumber(std::string* name)
-{
-
-	for (int i = 0; i < br->getCount(); i++)
-	{
-		if(*name == *(br->get_Name(i))) return i;
-	}
-	return 0;
-}
-
-
 
 int main()
 {
-	Big_b* tree = new Big_b(2, 2);
+	int count_mid_br = (std::rand() % 3) + 2;
+	std::cout << "count_mid_br: " << count_mid_br << std::endl;
+
+	Big_b* tree = new Big_b(2, count_mid_br);
+
 	for (int i = 0; i < tree->getCount(); ++i)
 	{
 		int count_house = 0;
+		std::cout << "Input count elfs on " << i << "th branch: " << std::endl;
 		std::cin >> count_house;
 		tree->getBranchAt(i)->set_House(count_house);
 	}
 
+	std::cout << "Input name: " << std::endl;
+	std::string name;
+	std::cin >> name;
+	int result = 0;
+
+	for (int i = 0; i < tree->getCount(); ++i)
+	{
+		
+	}
 	
 	delete tree;
 }
