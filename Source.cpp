@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cassert>
 #include <vector>
+#include <cstdlib>
 
 
 class Branch
@@ -111,30 +112,42 @@ public:
 };
 
 
+class Tree
+{
+private:
+	Big_b** big_b = nullptr;
+	int count_BB = 0;
+public:
+	Tree(int in_count, int in_count_Elf) : count_BB(in_count)
+	{
+		big_b = new Big_b* [in_count];
+		for (int i = 0; i < count_BB;++i)
+		{
+			int count_MB = std::rand() % 3 + 2;
+			big_b[i] = new Big_b(count_MB, in_count_Elf);
+		}
+	}
+
+};
+
+
 int main()
 {
-	int count_mid_br = (std::rand() % 3) + 2;
-	std::cout << "count_mid_br: " << count_mid_br << std::endl;
-
-	Big_b* tree = new Big_b(2, count_mid_br);
-
-	for (int i = 0; i < tree->getCount(); ++i)
+	std::vector <Tree*> trees(5);
+	//construction trees
+	for (int i = 0; i < trees.size(); i++)
 	{
-		int count_house = 0;
-		std::cout << "Input count elfs on " << i << "th branch: " << std::endl;
-		std::cin >> count_house;
-		tree->getBranchAt(i)->set_House(count_house);
+		int count_BB = std::rand() % 5 + 3;
+		std::cout << "Tree: " << i << "count BB: " << count_BB << std::endl;
+		trees[i] = new Tree(count_BB, 2);
 	}
 
-	std::cout << "Input name: " << std::endl;
-	std::string name;
-	std::cin >> name;
-	int result = 0;
 
-	for (int i = 0; i < tree->getCount(); ++i)
+
+
+	//destruction trees
+	for (int i = 0; i < trees.size(); i++) 
 	{
-		
+		delete trees[i];
 	}
-	
-	delete tree;
 }
