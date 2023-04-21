@@ -3,15 +3,16 @@
 #include <vector>
 #include <cstdlib>
 
+static int full_count_elfs;
 
 class Branch
 {
-	int count_hous = 0;
+	
 	std::vector<std::string> name_holder;
 
 public:
 
-	int get_House() { return count_hous; }
+	int get_House() { return name_holder.size(); }
 
 	//resizing name_holder vector. accommodation elfs on vector
 	void accommodation_in(int count_elf)
@@ -23,22 +24,31 @@ public:
 	// Устанавливаю количество домов на ветку. Которое сооветсвует количеству Эльфов живущих тут.
 	void set_House(int val)
 	{
-		if (val >= 0)
+		if (val <= 0)
 		{
 			std::cerr << "Err: to low value" << std::endl;
 			return;
 		}
-		count_hous = val;
 		accommodation_in(val);
 	}
 
 	//Индекс - номер дома в котором проживает эльф. Имя None значит что тут никто не проживает.
 	void set_Name_Elf(std::string name, int index)
 	{
-		assert(index > 0);
+		assert(index >= 0);
 		name_holder[index] = name;
 	}
-	
+	int find_name_on_Branch(std::string* name)
+	{
+		for (int i = 0; i < name_holder.size(); i++)
+		{
+			if (*name == name_holder[i]) 
+			{
+				return i;
+			}
+		}
+		return;
+	}
 };
 
 class Middle_B : public Branch
@@ -55,13 +65,15 @@ public:
 
 		this->set_House(in_count);
 
-		if (in_count == this->get_House()) std::cout << "Correct elfs";
+		if (in_count != this->get_House()) std::cout << "Un Correct elfs";
 		for (int i = 0; i < in_count; i++)
 		{
+			std::cout << "Address Mid_B: " << i << std::endl;
 			std::cout << "Input name Elf's: " << std::endl;
 			std::string name;
 			std::cin >> name;
 			this->set_Name_Elf(name, i);
+			full_count_elfs++;
 		}
 	}
 };
@@ -100,32 +112,68 @@ public:
 		
 		//Input Elfs in Big branch
 		this->set_House(in_Count);
-		if (in_Count == this->get_House()) std::cout << "Correct elfs";
+		if (in_Count != this->get_House()) std::cout << "UN Correct elfs";
 		for (int i = 0; i < in_Count; i++)
 		{
+			std::cout << "Address: Big_B " << i << std::endl;
 			std::cout << "Input name Elf's: " << std::endl;
 			std::string name;
 			std::cin >> name;
 			this->set_Name_Elf(name, i);
+			full_count_elfs++;
 		}
 	}
 };
 
+void summ(Big_b* bb)
+{
+	int count_elf_BB = bb->get_House();
+	for (int i = 0; i < bb->getCount(); i++)
+	{
+		count_elf_BB += bb->getBranchAt(i)->get_House();
+	}
+	std::cout << count_elf_BB << " Lives on Big branch with our commrad\n";
+}
 
 class Tree
 {
 private:
 	Big_b** big_b = nullptr;
 	int count_BB = 0;
+	int count_MB = 0;
 public:
 	Tree(int in_count, int in_count_Elf) : count_BB(in_count)
 	{
 		big_b = new Big_b* [in_count];
 		for (int i = 0; i < count_BB;++i)
 		{
-			int count_MB = std::rand() % 3 + 2;
+			count_MB = std::rand() % 3 + 2;
 			big_b[i] = new Big_b(count_MB, in_count_Elf);
 		}
+	}
+	int find_elf(std::string name)
+	{
+		for (int i = 0; i < count_BB; i++)
+		{
+			for (int j = 0; j < count_MB; j++)
+			{
+				int res = big_b[i]->getBranchAt(j)->find_name_on_Branch(&name);
+				if (res > 0)
+				{
+					std::cout << "Finded";
+					summ(big_b[i]);			
+					return 1;
+				}
+			}
+			int res = big_b[i]->find_name_on_Branch(&name);
+			if (res > 0)
+			{
+				std::cout << "Finded";
+				summ(big_b[i]);
+				return 1;
+			}
+		}
+		return 0;
 	}
 
 };
@@ -133,16 +181,24 @@ public:
 
 int main()
 {
-	std::vector <Tree*> trees(5);
+	std::time(nullptr);
+	std::vector <Tree*> trees(1);
+	full_count_elfs = 0;
 	//construction trees
 	for (int i = 0; i < trees.size(); i++)
 	{
 		int count_BB = std::rand() % 5 + 3;
 		std::cout << "Tree: " << i << "count BB: " << count_BB << std::endl;
-		trees[i] = new Tree(count_BB, 2);
+		trees[i] = new Tree(count_BB, 1);
 	}
+	std::cout << full_count_elfs;
 
-
+	std::string name;
+	std::cin >> name;
+	for (int i = 0; i < trees.size(); i++)
+	{
+		if (trees[i]->find_elf(name) == 1) break;
+	}
 
 
 	//destruction trees
