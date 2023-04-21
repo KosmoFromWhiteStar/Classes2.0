@@ -40,6 +40,11 @@ public:
 	}
 	int find_name_on_Branch(std::string* name)
 	{
+		if (this == nullptr)
+		{
+			std::cout << "ebat tt loh";
+			return -2;
+		}
 		for (int i = 0; i < name_holder.size(); i++)
 		{
 			if (*name == name_holder[i]) 
@@ -47,7 +52,7 @@ public:
 				return i;
 			}
 		}
-		return;
+		return -1;
 	}
 };
 
@@ -158,7 +163,7 @@ public:
 			for (int j = 0; j < count_MB; j++)
 			{
 				int res = big_b[i]->getBranchAt(j)->find_name_on_Branch(&name);
-				if (res > 0)
+				if (res >= 0)
 				{
 					std::cout << "Finded";
 					summ(big_b[i]);			
@@ -166,7 +171,7 @@ public:
 				}
 			}
 			int res = big_b[i]->find_name_on_Branch(&name);
-			if (res > 0)
+			if (res >= 0)
 			{
 				std::cout << "Finded";
 				summ(big_b[i]);
