@@ -110,7 +110,7 @@ public:
 
 		//Inizialization middle branch on big branch
 		branch = new Middle_B* [in_Count];
-		for (int i = 0; i < count_middle_B; i++ )
+		for (int i = 0; i <= count_middle_B; i++ )
 		{
 			branch[i] = new Middle_B(this, count_elfs);
 		}
