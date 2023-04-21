@@ -94,7 +94,7 @@ public:
 	{
 		if (this == nullptr) return nullptr;
 		if (index < 0) return nullptr;
-		if (index >= this->count_middle_B) return nullptr;
+		if (index > this->count_middle_B) return nullptr;
 		return this->branch[index];
 	}
 
@@ -110,7 +110,7 @@ public:
 
 		//Inizialization middle branch on big branch
 		branch = new Middle_B* [in_Count];
-		for (int i = 0; i < count_middle_B;++i)
+		for (int i = 0; i < count_middle_B; i++ )
 		{
 			branch[i] = new Middle_B(this, count_elfs);
 		}
@@ -165,7 +165,8 @@ public:
 				int res = big_b[i]->getBranchAt(j)->find_name_on_Branch(&name);
 				if (res >= 0)
 				{
-					std::cout << "Finded";
+					std::cout << "Finded\n";
+					std::cout << i << "th big branches " << j << "th middle branch\n";
 					summ(big_b[i]);			
 					return 1;
 				}
@@ -174,6 +175,7 @@ public:
 			if (res >= 0)
 			{
 				std::cout << "Finded";
+				std::cout << i << "th big branches\n";
 				summ(big_b[i]);
 				return 1;
 			}
@@ -187,7 +189,7 @@ public:
 int main()
 {
 	std::time(nullptr);
-	std::vector <Tree*> trees(1);
+	std::vector <Tree*> trees(5);
 	full_count_elfs = 0;
 	//construction trees
 	for (int i = 0; i < trees.size(); i++)
@@ -202,7 +204,11 @@ int main()
 	std::cin >> name;
 	for (int i = 0; i < trees.size(); i++)
 	{
-		if (trees[i]->find_elf(name) == 1) break;
+		if (trees[i]->find_elf(name) == 1)
+		{
+			std::cout << i << "th tree";
+			break;
+		}
 	}
 
 
