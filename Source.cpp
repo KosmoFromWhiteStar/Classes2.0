@@ -42,7 +42,7 @@ public:
 	{
 		if (this == nullptr)
 		{
-			std::cout << "ebat tt loh";
+			std::cout << "NULL";
 			return -2;
 		}
 		for (int i = 0; i < name_holder.size(); i++)
