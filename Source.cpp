@@ -129,6 +129,14 @@ public:
 			full_count_elfs++;
 		}
 	}
+	~Big_b()
+	{
+		for (int i = 0; i <= count_middle_B; i++)
+		{
+			delete branch[i];
+		}
+
+	}
 };
 
 void summ(Big_b* bb)
@@ -138,7 +146,7 @@ void summ(Big_b* bb)
 	{
 		count_elf_BB += bb->getBranchAt(i)->get_House();
 	}
-	std::cout << count_elf_BB << " Lives on Big branch with our commrad\n";
+	std::cout << count_elf_BB << " live on Big branch with our commrad\n";
 }
 
 class Tree
@@ -156,6 +164,14 @@ public:
 			count_MB = std::rand() % 3 + 2;
 			big_b[i] = new Big_b(count_MB, in_count_Elf);
 		}
+	}
+	~Tree()
+	{
+		for (int i = 0; i < count_BB;++i)
+		{
+			delete big_b[i];
+		}
+
 	}
 	int find_elf(std::string name)
 	{
@@ -196,6 +212,7 @@ int main()
 	for (int i = 0; i < trees.size(); i++)
 	{
 		int count_BB = std::rand() % 5 + 3;
+		std::cout << "+++++++++++++++++++++++++++++++\n";
 		std::cout << "Tree: " << i << "count BB: " << count_BB << std::endl;
 		trees[i] = new Tree(count_BB, 1);
 	}
