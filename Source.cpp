@@ -2,6 +2,7 @@
 #include <cassert>
 #include <vector>
 #include <cstdlib>
+#include <ctime>
 
 static int full_count_elfs;
 
@@ -73,7 +74,6 @@ public:
 		if (in_count != this->get_House()) std::cout << "Un Correct elfs";
 		for (int i = 0; i < in_count; i++)
 		{
-			std::cout << "Address Mid_B: " << i << std::endl;
 			std::cout << "Input name Elf's: " << std::endl;
 			std::string name;
 			std::cin >> name;
@@ -112,6 +112,7 @@ public:
 		branch = new Middle_B* [in_Count];
 		for (int i = 0; i <= count_middle_B; i++ )
 		{
+			std::cout << "Address Mid_B: " << i << std::endl;
 			branch[i] = new Middle_B(this, count_elfs);
 		}
 		
