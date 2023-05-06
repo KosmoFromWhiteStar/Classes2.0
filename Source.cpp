@@ -205,7 +205,8 @@ public:
 
 int main()
 {
-	std::time(nullptr);
+	unsigned long long seed = std::time(nullptr);
+	std::srand(seed);
 	std::vector <Tree*> trees(5);
 	full_count_elfs = 0;
 	//construction trees
