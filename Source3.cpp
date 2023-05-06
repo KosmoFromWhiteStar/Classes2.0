@@ -17,24 +17,10 @@ public:
 	}
 };
 
-class TOP_DIR : public Employer
-{
-	int vec = 0;
-public:
-	TOP_DIR(std::string in_name)
-	{
-		this->set_Name_Employers(in_name);
-	}
-	void Big_deal()
-	{
-		std::cin >> vec;
-	}
-};
 
 class Manager : public Employer
 {
 	int indentificator = 0;
-	Employer** employers = nullptr;
 public:
 	Manager(int in_num) : indentificator(in_num)
 	{
