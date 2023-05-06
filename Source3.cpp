@@ -72,7 +72,7 @@ public:
 		if (result == 2) return 'B';
 		if (result == 0) return 'C';
 	}
-	char status_work()
+	char status_work() const
 	{
 		return (in_work ? 'Y' : 'N');
 	}
@@ -105,7 +105,7 @@ public:
 
 	std::string get_work(int in_task = 0)
 	{
-		if (in_task != 0) task = in_task;//Êîñòûëü äëÿ âûäà÷è ïîâòîğîé çàäà÷è äëÿ ëîäûğåé.
+		if (in_task != 0) task = in_task;//ÃŠÃ®Ã±Ã²Ã»Ã«Ã¼ Ã¤Ã«Ã¿ Ã¢Ã»Ã¤Ã Ã·Ã¨ Ã¯Ã®Ã¢Ã²Ã®Ã°Ã®Ã© Ã§Ã Ã¤Ã Ã·Ã¨ Ã¤Ã«Ã¿ Ã«Ã®Ã¤Ã»Ã°Ã¥Ã©.
 		int manager_work = manager->managers(task);
 		std::string result = std::to_string(manager_work);
 		int task_Count = (rand() % count_workers);
@@ -161,12 +161,10 @@ int main(int argc, char* argv[])
 
 	// init Teams
 
-	int d10 = 10;
 	for (int i = 0; i < count_team; i++)
 	{
-		int task_for_this_team = task / 10;
-		if (task_for_this_team == 0) break;
-		team[i] = new Team(task_for_this_team, count_workers, i);
+		if (task == 0) break;
+		team[i] = new Team(task, count_workers, i);
 	}
 	bool full_work = false;
 	int new_task = 0;
